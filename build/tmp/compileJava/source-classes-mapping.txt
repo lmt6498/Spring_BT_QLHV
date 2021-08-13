@@ -10,13 +10,13 @@ dao/SelectClass.java
  dao.SelectClass
 services/ClassesService.java
  services.ClassesService
-services/StudentService.java
- services.StudentService
+dao/StudentCRUD.java
+ dao.StudentCRUD
 models/Classes.java
  models.Classes
 ApplicationConfig.java
  ApplicationConfig
+services/StudentService.java
+ services.StudentService
 controllers/StudentController.java
  controllers.StudentController
-dao/StudentCRUD.java
- dao.StudentCRUD

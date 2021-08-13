@@ -16,6 +16,7 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
     implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
     implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.8'
+    compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
 }
 
 test {

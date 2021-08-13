@@ -3,7 +3,9 @@ package controllers;
 import dao.SelectStudent;
 import models.Student;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import services.ClassesService;
 import services.StudentService;
 
@@ -19,47 +21,47 @@ public class StudentController {
     ClassesService classesService =new ClassesService();
 
     @RequestMapping("/show")
-    public String show(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    public ModelAndView show() throws SQLException, ClassNotFoundException {
         List<Student> list = SelectStudent.seclect();
-        request.setAttribute("list", list);
-        return "/views/students/ShowStudent.jsp";
+        ModelAndView modelAndView = new ModelAndView("show","lists",list);
+
+        return modelAndView;
     }
 
-    @GetMapping("/edit")
-    public String showEdit(HttpServletRequest request){
-        int index = Integer.parseInt(request.getParameter("index"));
-        request.setAttribute("student", studentService.list.get(index));
-        request.setAttribute("listDp", classesService.listDP);
-        return "/views/students/EditStudent.jsp";
+    @GetMapping("/{id}/edit")
+    public ModelAndView showEdit(@PathVariable int id, Model model){
+        ModelAndView modelAndView = new ModelAndView("edit","listDp", classesService.listDP);
+        model.addAttribute("student",studentService.list.get(id));
+        return modelAndView;
     }
     @GetMapping("/create")
-    public String showCreate(HttpServletRequest request) {
-        request.setAttribute("listDp", classesService.listDP);
-
-        return "/views/students/CreateStudent.jsp";
+    public ModelAndView showCreate(Model model) {
+        ModelAndView modelAndView = new ModelAndView("create","listDp", classesService.listDP);
+        model.addAttribute("student",new Student());
+        return modelAndView;
     }
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam int index) throws SQLException, ClassNotFoundException {
-        studentService.delete(index);
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable int id) throws SQLException, ClassNotFoundException {
+        studentService.delete(id);
         return "redirect:/show";
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute Student student) throws SQLException, ClassNotFoundException {
+    public String edit(Student student) throws SQLException, ClassNotFoundException {
         studentService.edit(student);
         return "redirect:/show";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Student student) throws SQLException, ClassNotFoundException {
+    public String create(Student student) throws SQLException, ClassNotFoundException {
         studentService.save(student);
         return "redirect:/show";
     }
 
     @PostMapping("/find")
-    public String findByName(HttpServletRequest request) {
-        String findName = request.getParameter("findName");
+    public ModelAndView findByName(@RequestParam String findName) {
+
         ArrayList<Student> students = new ArrayList<>();
         for (Student s:studentService.list
         ) {
@@ -67,7 +69,7 @@ public class StudentController {
                 students.add(s);
             }
         }
-        request.setAttribute("list", students);
-        return "/views/students/SearchStudent.jsp";
+        ModelAndView modelAndView = new ModelAndView("search","students",students);
+        return modelAndView;
     }
 }

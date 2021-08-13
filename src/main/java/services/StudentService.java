@@ -32,13 +32,8 @@ public class StudentService {
         StudentCRUD.delete(list.get(index).getId());
         list.remove(index);
     }
-    public static ArrayList<Student> findByName(String name) {
-        ArrayList<Student> list = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getName().contains(name)) {
-                list.add(list.get(i));
-            }
-        }
-        return list;
+
+    public Student findById(int index){
+        return list.get(index);
     }
 }
